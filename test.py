@@ -1,19 +1,17 @@
 from multiprocessing import Pool
 import os, time, random
+import requests
+import config
 
-def long_time_task(name):
-    print ('Run task %s (%s)...' % (name, os.getpid()))
-    start = time.time()
-    # time.sleep(random.random() * 3)
-    end = time.time()
-    print ('Task %s runs %0.2f seconds.start time %s' % (name, (end - start),start))
+
+def long_time_task():
+
+    url = 'http://www.ip181.com/daili/10.html'
+    random_headers = config.HEADER
+    random_headers['User-Agent'] = random.choice(config.USER_AGENTS)
+    r = requests.get(url,headers = random_headers,timeout = config.TIMEOUT)
+    print(r.status_code)
+    print(r.text)
 
 if __name__=='__main__':
-    print ('Parent process %s.' % os.getpid())
-    p = Pool()
-    for i in range(5000000):
-        p.apply_async(long_time_task, args=(i,))
-    print ('Waiting for all subprocesses done...')
-    p.close()
-    p.join()
-    print ('All subprocesses done.')
+    long_time_task()

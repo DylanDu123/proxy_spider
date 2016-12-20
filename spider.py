@@ -146,17 +146,17 @@ class DBHelper(object):
 if __name__ == "__main__":
 	sl = DBHelper()
 	while True:
-		print('去除无用的代理')
+		print('clean')
 		proxy_dbs = sl.selectAll()
 		for proxy_db in proxy_dbs:
 			if Spider.is_alive(args = {'ip':proxy_db[0],'port':proxy_db[1]}) == False:
 				sl.delete("""ip = '%s'"""%(proxy_db[0]))
-		print('代理清理结束')
+		print('clean up')
 
 
-		print('开始抓取代理')
+		print('find')
 		if sl.count()[0] < config.MINNUM:
 			sp = Spider()		
 			sp.run()
-		print('抓取代理结束')
+		print('find over')
 		time.sleep(config.UPDATE_TIME)
